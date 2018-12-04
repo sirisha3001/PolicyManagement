@@ -1,0 +1,163 @@
+
+<html>
+
+<head>
+<link
+	href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+	rel="stylesheet">
+<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="style_sheet.css">
+<link
+	href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css"
+	rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="../css/login_stylesheet.css" rel="stylesheet">
+<link href="../css/navigation_stylesheet.css" rel="stylesheet">
+<script>
+	$(function() {
+		$("#UserInfo_DateOfBirth").datepicker();
+	});
+	function register() {
+		var firstName = document.getElementById('UserInfo_FirstName');
+		var lastName = document.getElementById('UserInfo_LastName');
+		var dateOfBirth = document.getElementById('UserInfo_DateOfBirth');
+		var address = document.getElementById('UserInfo_Address');
+		var contactNumber = document.getElementById('UserInfo_ContactNumber');
+		var emailAddress = document.getElementById('UserInfo_Email');
+		var password = document.getElementById('UserInfo_Password');
+
+		$.ajax({
+			type : "POST",
+			url : "registerUser",
+			data : {
+				UserInfo_FirstName : firstName.value,
+				UserInfo_LastName : lastName.value,
+				UserInfo_DateOfBirth : dateOfBirth.value,
+				UserInfo_Address : address.value,
+				UserInfo_ContactNumber : contactNumber.value,
+				UserInfo_Email : emailAddress.value,
+				UserInfo_Password : password.value
+			},
+			success : function(result) {
+				alert(result);
+				$("#userModalHolder").html(result);
+				$("#userModal").modal();
+			},
+			error : function(result) {
+				alert("Registration failure");
+			}
+		});
+	}
+</script>
+</head>
+
+<body>
+	<div class="container-fluid" id="container-fuild-id">
+
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">PolicyManagementSystem</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li><a href="/login">Home</a></li>
+					<li><a href="/about">About Us</a></li>
+					<li><a href="/contact">Contact Us</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+
+					<li class="active"><a href="#"><span
+							class="glyphicon glyphicon-user"></span> Register</a></li>
+					<li><a href="/login"><span
+							class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<!-- /.container-fluid -->
+	<div class="container-fluid" id="container-fuild-id">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<div class="panel panel-login">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<form id="register-form" action="/registerUser" method="post"
+										role="form" data-toggle="validator">
+										<div class="form-group">
+											<input type="text" name="UserInfo_FirstName"
+												id="UserInfo_FirstName" tabindex="1" class="form-control"
+												placeholder="First Name" value="" required="required">
+										</div>
+										<div class="form-group">
+											<input type="text" name="UserInfo_LastName"
+												id="UserInfo_LastName" tabindex="1" class="form-control"
+												placeholder="Last Name" value="" required="required">
+										</div>
+										<div class="form-group">
+
+
+
+											<div class="form-group">
+												<input type="date" class="form-control"
+													id="UserInfo_DateOfBirth" name="UserInfo_DateOfBirth"
+													tabindex="1" placeholder="DateOfBirth" required="required"
+													value=""></input>
+											</div>
+
+										</div>
+										<div class="form-group">
+											<input type="text" name="UserInfo_Address"
+												id="UserInfo_Address" tabindex="1" class="form-control"
+												placeholder="Address" value="" required="required">
+										</div>
+										<div class="form-group">
+											<input type="tel" name="UserInfo_ContactNumber"
+												id="UserInfo_ContactNumber" tabindex="1"
+												class="form-control" placeholder="Contact Number" value=""
+												required="required">
+										</div>
+										<div class="form-group">
+											<input type="email" name="UserInfo_Email" id="UserInfo_Email"
+												tabindex="1" class="form-control"
+												placeholder="Email Address" value="" required="required">
+										</div>
+										<div class="form-group">
+											<input type="password" name="UserInfo_Password"
+												id="UserInfo_Password" tabindex="2" class="form-control"
+												placeholder="Password" required="required">
+										</div>
+										<div class="form-group">
+											<input type="password" name="UserInfo_ConfirmPassword"
+												id="UserInfo_ConfirmPassword" tabindex="2"
+												class="form-control" placeholder="Confirm Password"
+												required="required">
+										</div>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-sm-6 col-sm-offset-3">
+													<input type="submit" name="register-submit"
+														id="register-submit" tabindex="4"
+														class="form-control btn btn-login" value="Register Now" />
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

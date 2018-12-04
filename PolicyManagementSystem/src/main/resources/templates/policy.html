@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Policy Management</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="../css/policy_stylesheet.css" rel="stylesheet">
+	<script type="text/javascript" th:inline="javascript">
+	function editPolicy(clicked_id){
+		var id = clicked_id.replace('editButton','');
+		var policyName = 'policyName'+id;
+		var policyDetails = 'policyDetails'+id;
+		var policyId = 'policyId'+id;
+		var elem = document.getElementById(policyName);
+		var elem2 = document.getElementById(policyDetails);
+		var elem3 = document.getElementById(policyId);
+		$.ajax({
+	        type: "POST",
+	        url: "editPolicy",
+	        data: {
+	        policyId:elem3.innerHTML,
+	       	policyName:elem.value,
+	       	policyDetails:elem2.value
+	  
+		
+	        },
+	        success: function (result) {
+	            alert("Policy updated succesfully");
+	        },
+	        error: function (result) {
+	        	 alert("Policy update failure");
+	        }
+	    });
+	}
+	</script>
+
+</head>
+<body>
+	<div class="container-fluid" id="container-fuild-id">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">PolicyManagementSystem</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li><a href="/login">Home</a></li>
+					<li><a href="/about">About Us</a></li>
+					<li><a href="/contact">Contact Us</a></li>
+					<li class="active"><a href="#">Policy</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+
+					<li><a href="/logout"><span
+							class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<div class="container">
+		<form action="#" data-th-action="@{/editPolicy}" method="post">
+			<table class="table table-striped  table-hover table-condensed">
+				<caption>Available Policies</caption>
+				<thead>
+					<tr>
+						<th>S.No</th>
+						<th>Policy Name</th>
+						<th>Policy Details</th>
+						<th th:style="${isUserAdmin} ? 'display:block' : 'display:none'">
+							Edit Policy</th>
+					</tr>
+				</thead>
+
+				<tbody th:if="${isUserAdmin }">
+					<tr th:each=" tf,iter: ${policies}">
+						<td th:text="${tf.policyId}" th:id ="'policyId' + ${iter.count}" th:name ="'policyId' + ${iter.count}">
+					<td th:id="'policyNames' + ${iter.count}"><input type="text"
+							th:name="'policyName' + ${iter.count}"  th:value="${tf.policyName}" size="50" th:id ="'policyName' + ${iter.count}"/></td>
+						<td th:id="'policyDetailss' + ${iter.count}"><input
+							type="text" th:name="'policyDetails' + ${iter.count}"  th:id ="'policyDetails' + ${iter.count}"
+							th:value="${tf.policyDetails}" size="80"/></td>
+						
+						<td><button th:id="'editButton'+${iter.count}" type="button" onclick="editPolicy(this.id)" th:value="submit" class="btn btn-link">Edit</button></td>
+					</tr>
+
+
+				</tbody>
+				<tbody th:if="${not isUserAdmin }">
+					<tr th:each=" tf,iter: ${policies}">
+						<td th:text="${iter.count}">
+						<td th:id="'policyName' + ${iter.count}"
+							th:text="${tf.policyName}"></td>
+						<td th:id="'policyDetails' + ${iter.count}"
+							th:text="${tf.policyDetails}"></td>
+					</tr>
+
+
+				</tbody>
+
+			</table>
+		</form>
+	</div>
+
+	<div class="container" th:if="${not isUserAdmin}">
+		<table
+			class="table table-striped table-bordered table-hover table-condensed">
+			<caption>Policy Details</caption>
+			<thead>
+				<tr>
+					<th>Policy No</th>
+					<th>Policy Name</th>
+					<th>Amount Paid</th>
+					<th>Policy End Date</th>
+					<th>Valid</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each=" tf,iter: ${userPolicies}">
+					<td th:text="${iter.count}" />
+					<td th:text="${tf.policyName}" />
+					<td th:text="${tf.amountPaid}" />
+					<td th:text="${tf.policyEndDate}" />
+					<td th:text="${tf.isPolicyValid}" />
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
+
+
+
+
